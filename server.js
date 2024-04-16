@@ -8,7 +8,8 @@ const mongoURI = process.env.MONGO_URI;
 const Product = require('./models/productModel')
 
 // this middleware is required to be able to accept and parse the json body of our requests
-app.use(express.json())
+app.use(express.json());
+app.use(express.urlencoded({extended: false}))
 
 // routes
 app.get('/', (req, res) => {
@@ -25,7 +26,7 @@ app.get('/api/product', async (req, res) => {
         res.status(200).json(products);
     } catch (e) {
         console.error(e);
-        res.status(500).json({message: error.message});
+        res.status(500).json({message: e.message});
     }
 })
 
@@ -36,7 +37,21 @@ app.get('/api/product/:id', async (req, res) => {
         res.status(200).json(product);
     } catch (e) {
         console.error(e);
-        res.status(500).json({message: error.message});        
+        res.status(500).json({message: e.message});        
+    }
+})
+
+app.delete('/api/product/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const product = await Product.findByIdAndDelete(id);
+        if (!product) {
+            return res.status(404).json({message: 'this product cannot be found'});
+        }
+        res.status(200).json(product);
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({message: e.message});
     }
 })
 
@@ -48,7 +63,7 @@ app.post('/api/product', async (req, res) => {
         res.status(200).json(product);
     } catch (e) {
         console.error(e);
-        res.status(500).json({message: error.message});
+        res.status(500).json({message: e.message});
     }
 })
 
@@ -64,7 +79,7 @@ app.put('/api/product/:id', async(req, res) => {
         res.status(200).json(product);
     } catch (e) {
         console.error(e);
-        res.status(500).json({message: error.message});
+        res.status(500).json({message: e.message});
     }
 })
 

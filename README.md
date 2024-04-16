@@ -9,6 +9,7 @@ There are differences from what was covered in class.
 3. Nesting the app.listen in the mongoose connection callback, rather than having it sequentially after.
 4. not using /api/ routes. [^2]
 5. using Insomnia rather than Postman
+6. when adding the put route, update did not include {new: true} in the tutorial, so the value that is returned is the original value in the database, not the one updated with the body of the request.
 
 [^1]: I have updated my own code to use the .env, so that my connection string is not pushed to github.
 [^2]: I have updated my own routes to use /api when I want to interact with my database.  This means that the responses are json objects, rather than a user view.
